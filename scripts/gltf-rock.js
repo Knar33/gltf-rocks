@@ -1,3 +1,5 @@
+import { noise } from "./perlin3d.js";
+
 function generateRock(index) {
     //generate vertices of icosahedron using 3 golden ratio rectangles
     const g = (1 + Math.sqrt(5)) / 2; //golden ratio
@@ -57,8 +59,10 @@ function generateRock(index) {
             //normalize vertex
             var normalizedVector = normalizeVector(triangles[triangle][vertex]);
             //grab perlin noise value for vertex position
+            var vertexNoise = noise(normalizedVector[0], normalizedVector[1], normalizedVector[2]);
             //add perlin noise to vertex offset
-            triangles[triangle][vertex] = normalizedVector;
+            var noisedVertex = [normalizedVector[0] * (1 + vertexNoise), normalizedVector[1] * (1 + vertexNoise),normalizedVector[2] * (1 + vertexNoise)];
+            triangles[triangle][vertex] = noisedVertex;
         }
     }
 
@@ -91,5 +95,6 @@ function normalizeVector(vector) {
     
     return [x/length, y/length, z/length];
 }
+
 
 export { generateRock }

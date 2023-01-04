@@ -32,6 +32,24 @@ function generateRock(index) {
     ]
 
     //sub-divide triangles and update vertex/triangle array
+    const triangleCount = triangles.length;
+    for (let triangle = 0; triangle < triangleCount; triangle++) {
+        //endpoints
+        let v1 = triangles[triangle][0];
+        let v2 = triangles[triangle][1];
+        let v3 = triangles[triangle][2];
+ 
+        //midpoints
+        let v12 = [(v1[0] + v2[0]), (v1[1] + v2[1]), (v1[2] + v2[2])];
+        let v13 = [(v1[0] + v3[0]), (v1[1] + v3[1]), (v1[2] + v3[2])];
+        let v23 = [(v2[0] + v3[0]), (v2[1] + v3[1]), (v2[2] + v3[2])];
+        
+        //new triangles
+        triangles[triangle] = [v12, v13, v23];
+        triangles.push([v1, v13, v12]);
+        triangles.push([v2, v12, v23]);
+        triangles.push([v3, v13, v23]);
+    }
     
     //for each vertex, offset by 3d perlin noise value
 

@@ -1,4 +1,10 @@
 function generateRock(index) {
+    //generate vertices of icosahedron using 3 golden ratio rectangles
+    //hard-code triangle array using vertices (or find an elegant way..)
+    //sub-divide triangles and update vertex/triangle array
+    //for each vertex, offset by 3d perlin noise value
+    //generate mesh
+
     const geometry = new THREE.BufferGeometry();
 
     const g = (1 + Math.sqrt(5)) / 2; //golden ratio

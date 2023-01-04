@@ -52,9 +52,17 @@ function generateRock(index) {
     }
     
     //for each vertex, offset by 3d perlin noise value
+    for (let triangle = 0; triangle < triangles.length; triangle++) {
+        for (let vertex = 0; vertex < 3; vertex++) {
+            //normalize vertex
+            var normalizedVector = normalizeVector(triangles[triangle][vertex]);
+            //grab perlin noise value for vertex position
+            //add perlin noise to vertex offset
+            triangles[triangle][vertex] = normalizedVector;
+        }
+    }
 
-    //generate mesh
-
+    //generate mesh (noise could happen here to be more efficient but this better represents the final design)
     var geometryVertices = [];
     for (let triangle = 0; triangle < triangles.length; triangle++) {
         for (let vertex = 0; vertex < 3; vertex++) {
@@ -72,6 +80,16 @@ function generateRock(index) {
         fog: true } );
     material.side = THREE.DoubleSide;
     return new THREE.Mesh( geometry, material );
+}
+
+function normalizeVector(vector) {
+    let x = vector[0];
+    let y = vector[1];
+    let z = vector[2];
+
+    let length = Math.sqrt((x * x) + (y * y) + (z * z));
+    
+    return [x/length, y/length, z/length];
 }
 
 export { generateRock }

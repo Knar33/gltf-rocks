@@ -58,8 +58,8 @@ function generateRock(index) {
         for (let vertex = 0; vertex < 3; vertex++) {
             //normalize vertex
             var normalizedVector = normalizeVector(triangles[triangle][vertex]);
-            //grab perlin noise value for vertex position
-            var vertexNoise = noise(normalizedVector[0], normalizedVector[1], normalizedVector[2]);
+            //grab perlin noise value for vertex position - I add the index multiplied by 10 to the x component to get a new mesh for each index
+            var vertexNoise = noise(normalizedVector[0] + (index * 10), normalizedVector[1], normalizedVector[2]);
             //add perlin noise to vertex offset
             var noisedVertex = [normalizedVector[0] * (1 + vertexNoise), normalizedVector[1] * (1 + vertexNoise),normalizedVector[2] * (1 + vertexNoise)];
             triangles[triangle][vertex] = noisedVertex;
@@ -80,7 +80,8 @@ function generateRock(index) {
     var geometryBuffer = new Float32Array(geometryVertices);
     geometry.setAttribute( 'position', new THREE.BufferAttribute( geometryBuffer, 3 ) );
     
-    const material = new THREE.MeshBasicMaterial( { color: 0x111111,
+    var matColor = index % 15 == 0 ? 0xd4af37 : (index +  index * 30);
+    const material = new THREE.MeshBasicMaterial( { color: matColor,
         fog: true } );
     material.side = THREE.DoubleSide;
     return new THREE.Mesh( geometry, material );
